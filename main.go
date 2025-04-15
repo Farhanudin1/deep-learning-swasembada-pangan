@@ -181,9 +181,11 @@ func main() {
 	http.HandleFunc("/dashboard.html", DashboardHandler)
 
 	port := os.Getenv("PORT")
-	if port == "" {
-		log.Fatal("PORT environment variable not set")
-	}
+if port == "" {
+    port = "10000"
+}
+http.ListenAndServe(":" + port, nil)
+
 
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
