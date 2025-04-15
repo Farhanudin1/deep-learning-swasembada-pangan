@@ -8,6 +8,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 
 	firebase "firebase.google.com/go/v4"
 	"github.com/google/uuid"
@@ -178,7 +179,12 @@ func main() {
 	// Endpoint untuk dashboard
 	http.HandleFunc("/dashboard.html", DashboardHandler)
 
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "10000" // fallback buat development lokal
+	}
+
 	// Jalankan server
-	fmt.Println("Server running at http://localhost:10000")
-	log.Fatal(http.ListenAndServe(":10000", nil))
+	fmt.Println("Server running at http://localhost:")
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
