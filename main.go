@@ -185,6 +185,5 @@ func main() {
 		log.Fatal("PORT environment variable not set")
 	}
 
-	fmt.Printf("Server running at http://localhost:%s\n", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
