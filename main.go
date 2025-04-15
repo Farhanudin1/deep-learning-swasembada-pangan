@@ -12,6 +12,7 @@ import (
 
 	firebase "firebase.google.com/go/v4"
 	"github.com/google/uuid"
+	"github.com/joho/godotenv"
 	"google.golang.org/api/option"
 )
 
@@ -162,29 +163,28 @@ func DashboardHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	_, err := InitializeFirebaseApp()
+	// Load .env jika lokal
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("No .env file found, continuing with default env vars")
+	}
+
+	_, err = InitializeFirebaseApp()
 	if err != nil {
 		log.Fatalf("Error initializing Firebase: %v", err)
 	}
 
-	// Endpoint untuk beranda.html
+	// Endpoint handlers
 	http.HandleFunc("/", ServeBeranda)
-
-	// Endpoint untuk signin.html
 	http.HandleFunc("/signin.html", ServeSignin)
-
-	// Endpoint untuk login
 	http.HandleFunc("/login", LoginHandler)
-
-	// Endpoint untuk dashboard
 	http.HandleFunc("/dashboard.html", DashboardHandler)
 
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "10000" // fallback buat development lokal
+		log.Fatal("PORT environment variable not set")
 	}
 
-	// Jalankan server
-	fmt.Println("Server running at http://localhost:10000")
+	fmt.Printf("Server running at http://localhost:%s\n", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
