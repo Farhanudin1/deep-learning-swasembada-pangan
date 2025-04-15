@@ -185,6 +185,6 @@ func main() {
 	}
 
 	// Jalankan server
-	fmt.Println("Server running at http://localhost:")
+	fmt.Println("Server running at http://localhost:10000")
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
